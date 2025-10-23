@@ -582,7 +582,7 @@ def plot_pupil_coordinates(frames, px, py, cleaned_px, cleaned_py, figure_size=(
     plt.tight_layout()
     plt.show()
 
-def plot_fixation_eval(raw_csv, intervals, means_csv, annotate_errors=True, one_based=False):
+def plot_fixation_eval(raw_csv, intervals, means_csv, annotate_errors=True, one_based=False, filter_fun=lambda x: x):
     """
     raw_csv  : samples CSV with columns: image, px, py
     intervals: dict like {'0': (0,42), '1': (44,85), ...} (inclusive)
@@ -591,6 +591,7 @@ def plot_fixation_eval(raw_csv, intervals, means_csv, annotate_errors=True, one_
     """
     # --- raw samples & true labels ---
     df = pd.read_csv(raw_csv)
+    df = filter_fun(df)
     df['true_fix'] = df['image'].str[:2].astype(int)
 
     # predicted labels from intervals (default = saccade)
